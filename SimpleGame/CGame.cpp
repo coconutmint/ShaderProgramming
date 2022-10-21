@@ -7,6 +7,13 @@ CGame::CGame(GSEVec2 size)
 	m_renderer = new Renderer((int)size.x, (int)size.y);
 	m_objectMgr = new GSEObjectMgr();
 
+	//Create hero object
+	GSEVec3 heroobjPos = { 0,0,0 };
+	GSEVec3 heroobjSize = { 100,10,10 };
+	GSEVec3 heroobjVel = { 0,0,0 };
+	GSEVec3 heroobjAcc = { 0,0,0 };
+	float  heroobjMass = 1.f;
+	m_heroID = m_objectMgr->AddObject(heroobjPos, heroobjSize, heroobjVel, heroobjAcc, heroobjMass);
 	//test
 
 	for(int i = 0; i < MAX_OBJECT_COUNT; i++) 
@@ -59,7 +66,7 @@ void CGame::RenderScene()
 	}
 }
 
-void CGame::UpdateObjects(float eTime)
+void CGame::UpdateObjects(GSEKeyboardMapper keyMap, float eTime)
 {
 	if (m_objectMgr != NULL)
 	{

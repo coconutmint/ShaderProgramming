@@ -9,21 +9,23 @@ but WITHOUT ANY WARRANTY.
 */
 
 #include "stdafx.h"
-#include <iostream>
 #include "Dependencies\glew.h"
 #include "Dependencies\freeglut.h"
 
 #include "CGame.h"
+#include "Global.h"
 
 CGame* g_game = NULL;
 float g_prevTime = 0;
+GSEKeyboardMapper g_keyMapper;
 
 void RenderScene(void)
 {
 	float eTime = glutGet(GLUT_ELAPSED_TIME) - g_prevTime;
+	g_prevTime = glutGet(GLUT_ELAPSED_TIME);
 	eTime = eTime / 1000.f;
 
-	g_game->UpdateObjects(eTime);
+	g_game->UpdateObjects(g_keyMapper, eTime);
 	g_game->RenderScene();
 	glutSwapBuffers();
 }
@@ -40,10 +42,49 @@ void MouseInput(int button, int state, int x, int y)
 
 void KeyInput(unsigned char key, int x, int y)
 {
+	switch (key)
+	{
+	case 'w' | 'W':
+		g_keyMapper.W_Key = true;
+		break;
+	case 'a'|'A':
+		g_keyMapper.A_Key = true;
+		break;
+	case 's' | 'S':
+		g_keyMapper.S_Key = true;
+		break;
+	case 'd' | 'D':
+		g_keyMapper.D_Key = true;
+		break;
+	}
+	RenderScene();
+}
+
+void KeyUpInput(unsigned char key, int x, int y)
+{
+	switch (key)
+	{
+	case 'w' | 'W':
+		g_keyMapper.W_Key = false;
+		break;			    
+	case 'a' | 'A':		    
+		g_keyMapper.A_Key = false;
+		break;			    
+	case 's' | 'S':		    
+		g_keyMapper.S_Key = false;
+		break;			    
+	case 'd' | 'D':		    
+		g_keyMapper.D_Key = false;
+		break;
+	}
 	RenderScene();
 }
 
 void SpecialKeyInput(int key, int x, int y)
+{
+	RenderScene();
+}
+void SpecialKeyUpInput(int key, int x, int y)
 {
 	RenderScene();
 }
@@ -72,9 +113,12 @@ int main(int argc, char** argv)
 
 	glutDisplayFunc(RenderScene);
 	glutIdleFunc(Idle);
-	glutKeyboardFunc(KeyInput);
 	glutMouseFunc(MouseInput);
+	glutKeyboardFunc(KeyInput);
+	glutKeyboardUpFunc(KeyUpInput);
 	glutSpecialFunc(SpecialKeyInput);
+	glutSpecialUpFunc(SpecialKeyUpInput);
+
 
 	g_prevTime = glutGet(GLUT_ELAPSED_TIME);
 

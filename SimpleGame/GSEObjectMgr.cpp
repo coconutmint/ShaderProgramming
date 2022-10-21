@@ -1,5 +1,6 @@
 #include "stdafx.h"
 #include "GSEObjectMgr.h"
+#include <iostream>
 
 GSEObjectMgr::GSEObjectMgr()
 {
@@ -18,18 +19,19 @@ GSEObjectMgr::~GSEObjectMgr()
 	}
 }
 
-bool GSEObjectMgr::AddObject(GSEVec3 pos, GSEVec3 size, GSEVec3 vel, GSEVec3 acc, float mass)
+int GSEObjectMgr::AddObject(GSEVec3 pos, GSEVec3 size, GSEVec3 vel, GSEVec3 acc, float mass)
 {
 	//find empty slot
 	int index = FindEmptySlot();
 
 	if (index < 0)
 	{
-		return false;
+		std::cout << "No more empty object slot" << std::endl;
+		return -1;
 	}
 
 	m_objects[index] = new GSEObject(pos, size, vel, acc, mass);
-	return true;
+	return index;
 }
 
 GSEObject GSEObjectMgr::GetObject(int index)
