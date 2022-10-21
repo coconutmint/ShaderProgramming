@@ -16,11 +16,15 @@ but WITHOUT ANY WARRANTY.
 #include "CGame.h"
 
 CGame* g_game = NULL;
+float g_prevTime = 0;
 
 void RenderScene(void)
 {
-	g_game->RenderScene();
+	float eTime = glutGet(GLUT_ELAPSED_TIME) - g_prevTime;
+	eTime = eTime / 1000.f;
 
+	g_game->UpdateObjects(eTime);
+	g_game->RenderScene();
 	glutSwapBuffers();
 }
 
@@ -71,6 +75,8 @@ int main(int argc, char** argv)
 	glutKeyboardFunc(KeyInput);
 	glutMouseFunc(MouseInput);
 	glutSpecialFunc(SpecialKeyInput);
+
+	g_prevTime = glutGet(GLUT_ELAPSED_TIME);
 
 	glutMainLoop();
 

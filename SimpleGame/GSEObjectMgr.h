@@ -12,6 +12,7 @@ public:
 	GSEObject GetObject(int index);
 	bool DeleteObject(int index);
 	int FindEmptySlot();
+	void UpdateObjects(float eTime);
 
 private:
 	GSEObject* m_objects[MAX_OBJECT_COUNT];

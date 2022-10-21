@@ -79,3 +79,14 @@ int GSEObjectMgr::FindEmptySlot()
 	//Fail to find empty slot
 	return -1;
 }
+
+void GSEObjectMgr::UpdateObjects(float eTime)
+{
+	for (int i = 0; i < MAX_OBJECT_COUNT; ++i)
+	{
+		if (m_objects[i] != NULL)
+		{
+			m_objects[i]->Update(eTime);
+		}
+	}
+}

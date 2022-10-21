@@ -14,6 +14,13 @@ GSEObject::~GSEObject()
 {
 }
 
+void GSEObject::Update(float eTime)
+{
+	m_pos.x = m_pos.x + m_vel.x * eTime;
+	m_pos.y = m_pos.y + m_vel.y * eTime;
+	m_pos.z = m_pos.z + m_vel.z * eTime;
+}
+
 GSEVec3 GSEObject::GetPos()
 {
 	return m_pos;

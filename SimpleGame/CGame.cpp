@@ -19,6 +19,11 @@ CGame::CGame(GSEVec2 size)
 		objPos.x = ((float)std::rand() / (float)RAND_MAX - 0.5f) * 2.f * 250.f;
 		objPos.y = ((float)std::rand() / (float)RAND_MAX - 0.5f) * 2.f * 250.f;
 		objSize.x = ((float)std::rand() / (float)RAND_MAX) * 5.f;
+	
+		objVel.x = ((float)std::rand() / (float)RAND_MAX - 0.5f) * 2.f * 3.f;
+		objVel.y = ((float)std::rand() / (float)RAND_MAX - 0.5f) * 2.f * 3.f;
+		objVel.z = 0.f;
+
 		m_objectMgr->AddObject(objPos, objSize, objVel, objAcc, objMass);
 	}
 }
@@ -51,5 +56,18 @@ void CGame::RenderScene()
 		{
 			m_renderer->DrawSolidRect(pos.x, pos.y, pos.z, size.x, 1, 0, 1, 1);
 		}
+	}
+}
+
+void CGame::UpdateObjects(float eTime)
+{
+	if (m_objectMgr != NULL)
+	{
+		m_objectMgr->UpdateObjects(eTime);
+	}
+	else
+	{
+		//강제로 죽게하는 asset추가해보기
+		std::cout << "m_objectMgr is NULL" << std::endl;
 	}
 }

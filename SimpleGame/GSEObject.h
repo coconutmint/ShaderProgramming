@@ -7,6 +7,8 @@ public:
 	GSEObject(GSEVec3 pos, GSEVec3 size, GSEVec3 vel, GSEVec3 acc, float mass);
 	~GSEObject();
 
+	void Update(float eTime);
+
 	GSEVec3 GetPos();
 	void SetPos(GSEVec3 in);
 	GSEVec3 GetSize();
