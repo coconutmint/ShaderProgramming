@@ -18,7 +18,7 @@ GSEObjectMgr::~GSEObjectMgr()
 	}
 }
 
-bool GSEObjectMgr::AddObject(GSEVec3 pos, GSEVec3 size)
+bool GSEObjectMgr::AddObject(GSEVec3 pos, GSEVec3 size, GSEVec3 vel, GSEVec3 acc, float mass)
 {
 	//find empty slot
 	int index = FindEmptySlot();
@@ -28,7 +28,7 @@ bool GSEObjectMgr::AddObject(GSEVec3 pos, GSEVec3 size)
 		return false;
 	}
 
-	m_objects[index] = new GSEObject(pos, size);
+	m_objects[index] = new GSEObject(pos, size, vel, acc, mass);
 	return true;
 }
 
@@ -36,7 +36,10 @@ GSEObject GSEObjectMgr::GetObject(int index)
 {
 	GSEVec3 pos = { 0,0,0 };
 	GSEVec3 size = { 0,0,0 };
-	GSEObject temp = GSEObject(pos, size);
+	GSEVec3 vel = { 0,0,0 };
+	GSEVec3 acc = { 0,0,0 };
+	float mass = 0;
+	GSEObject temp = GSEObject(pos, size, vel, acc, mass);
 
 	if (m_objects[index] != NULL)
 		//return m_objects[index];

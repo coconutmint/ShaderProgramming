@@ -11,12 +11,15 @@ CGame::CGame(GSEVec2 size)
 
 	for(int i = 0; i < MAX_OBJECT_COUNT; i++) 
 	{
-		GSEVec3 objpos = { 0,0,0 };
-		GSEVec3 objsize = { 100,10,10 };
-		objpos.x = ((float)std::rand() / (float)RAND_MAX - 0.5f) * 2.f * 250.f;
-		objpos.y = ((float)std::rand() / (float)RAND_MAX - 0.5f) * 2.f * 250.f;
-		objsize.x = ((float)std::rand() / (float)RAND_MAX) * 5.f;
-		m_objectMgr->AddObject(objpos, objsize);
+		GSEVec3 objPos = { 0,0,0 };
+		GSEVec3 objSize = { 100,10,10 };
+		GSEVec3 objVel = { 100,10,10 };
+		GSEVec3 objAcc = { 100,10,10 };
+		float objMass = 1.f;
+		objPos.x = ((float)std::rand() / (float)RAND_MAX - 0.5f) * 2.f * 250.f;
+		objPos.y = ((float)std::rand() / (float)RAND_MAX - 0.5f) * 2.f * 250.f;
+		objSize.x = ((float)std::rand() / (float)RAND_MAX) * 5.f;
+		m_objectMgr->AddObject(objPos, objSize, objVel, objAcc, objMass);
 	}
 }
 CGame::~CGame()
