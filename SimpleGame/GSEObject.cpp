@@ -70,3 +70,14 @@ void GSEObject::SetMass(float in)
 {
 	m_mass = in;
 }
+
+void GSEObject::AddForce(GSEVec3 force, float eTime)
+{
+	GSEVec3 acc;
+	acc.x = force.x / m_mass;
+	acc.y = force.y / m_mass;
+	acc.z = force.z / m_mass;
+	m_vel.x += acc.x * eTime;
+	m_vel.y += acc.y * eTime;
+	m_vel.z += acc.z * eTime;
+}

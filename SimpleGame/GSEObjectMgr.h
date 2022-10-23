@@ -13,6 +13,7 @@ public:
 	bool DeleteObject(int index);
 	int FindEmptySlot();
 	void UpdateObjects(float eTime);
+	void AddForce(int index, GSEVec3 force, float eTime);
 
 private:
 	GSEObject* m_objects[MAX_OBJECT_COUNT];

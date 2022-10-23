@@ -68,6 +68,30 @@ void CGame::RenderScene()
 
 void CGame::UpdateObjects(GSEKeyboardMapper keyMap, float eTime)
 {
+	//add force
+	float movingHeroForce = 100.f;
+	GSEVec3 heroForceDirection;
+	if (keyMap.W_Key)
+	{
+		heroForceDirection.y += 1.f;
+	}
+	if (keyMap.A_Key)
+	{
+		heroForceDirection.x -= 1.f;
+	}
+	if (keyMap.S_Key)
+	{
+		heroForceDirection.y -= 1.f;
+	}
+	if (keyMap.D_Key)
+	{
+		heroForceDirection.x += 1.f;
+	}
+	heroForceDirection.x *= movingHeroForce;
+	heroForceDirection.y *= movingHeroForce;
+	heroForceDirection.z *= movingHeroForce;
+	m_objectMgr->AddForce(m_heroID, heroForceDirection, eTime);
+
 	if (m_objectMgr != NULL)
 	{
 		m_objectMgr->UpdateObjects(eTime);

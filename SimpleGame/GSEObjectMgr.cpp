@@ -92,3 +92,11 @@ void GSEObjectMgr::UpdateObjects(float eTime)
 		}
 	}
 }
+
+void GSEObjectMgr::AddForce(int index, GSEVec3 force, float eTime)
+{
+	if (m_objects[index] != NULL)
+	{
+		m_objects[index]->AddForce(force, eTime);
+	}
+}

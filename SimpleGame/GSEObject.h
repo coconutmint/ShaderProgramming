@@ -20,6 +20,8 @@ public:
 	float GetMass();
 	void SetMass(float in);
 
+	void AddForce(GSEVec3 force, float eTime);
+
 private:
 	GSEVec3 m_pos;
 	GSEVec3 m_size;
