@@ -3,11 +3,11 @@
 #define MAX_OBJECT_COUNT 1000
 
 struct GSEVec2 {
-	float x, y = 0.f;
+	float x = 0.f, y = 0.f;
 };
 
 struct GSEVec3 {
-	float x, y, z = 0.f;
+	float x = 0.f, y = 0.f, z = 0.f;
 };
 
 struct GSEKeyboardMapper {
