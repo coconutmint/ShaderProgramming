@@ -24,7 +24,7 @@ void RenderScene(void)
 	float eTime = glutGet(GLUT_ELAPSED_TIME) - g_prevTime;
 	g_prevTime = glutGet(GLUT_ELAPSED_TIME);
 	eTime = eTime / 1000.f;
-
+	eTime = 0.016f;
 	g_game->UpdateObjects(g_keyMapper, eTime);
 	g_game->RenderScene();
 	glutSwapBuffers();

@@ -1,6 +1,8 @@
 #include "stdafx.h"
 #include "GSEObject.h"
-
+#include <math.h>
+#include <float.h>
+#include <iostream>
 GSEObject::GSEObject(GSEVec3 pos, GSEVec3 size, GSEVec3 vel, GSEVec3 acc, float mass)
 {
 	m_pos = pos;
@@ -8,6 +10,7 @@ GSEObject::GSEObject(GSEVec3 pos, GSEVec3 size, GSEVec3 vel, GSEVec3 acc, float 
 	m_vel = vel;
 	m_acc = acc;
 	m_mass = mass;
+	m_fricCoef = 0.05f;
 }
 
 GSEObject::~GSEObject()
@@ -16,6 +19,33 @@ GSEObject::~GSEObject()
 
 void GSEObject::Update(float eTime)
 {
+	float normalForce = m_mass * GRAVITY;
+	float fric = m_fricCoef * normalForce;
+	std::cout << m_vel.x << std::endl;
+	std::cout << m_vel.y << std::endl;
+	float mag = sqrtf(m_vel.x * m_vel.x + m_vel.y * m_vel.y);
+	
+
+	std::cout << "dddddddddddddddddddddd" << std::endl;
+	std::cout << m_vel.x << std::endl;
+	std::cout << m_vel.y << std::endl;
+	if (mag > FLT_EPSILON)
+	{
+		GSEVec3 velDir = { m_vel.x / mag, m_vel.y / mag };
+		velDir.x *= -1.f;
+		velDir.y *= -1.f;
+		velDir.x *= fric;
+		velDir.y *= fric;
+		velDir.x /= m_mass;
+		velDir.y /= m_mass;
+		m_vel.x += velDir.x;
+		m_vel.y += velDir.y;
+	}
+	else
+	{
+
+	}
+
 	m_pos.x = m_pos.x + m_vel.x * eTime;
 	m_pos.y = m_pos.y + m_vel.y * eTime;
 	m_pos.z = m_pos.z + m_vel.z * eTime;
@@ -71,6 +101,16 @@ void GSEObject::SetMass(float in)
 	m_mass = in;
 }
 
+float GSEObject::GetFricCoef()
+{
+	return m_fricCoef;
+}
+
+void GSEObject::SetFricCoef(float in)
+{
+	m_fricCoef = in;
+}
+
 void GSEObject::AddForce(GSEVec3 force, float eTime)
 {
 	GSEVec3 acc;
@@ -80,4 +120,5 @@ void GSEObject::AddForce(GSEVec3 force, float eTime)
 	m_vel.x += acc.x * eTime;
 	m_vel.y += acc.y * eTime;
 	m_vel.z += acc.z * eTime;
+	std::cout << "----------" << m_vel.x << std::endl;
 }

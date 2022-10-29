@@ -1,6 +1,7 @@
 #pragma once
 
 #define MAX_OBJECT_COUNT 1000
+#define GRAVITY 9.8f
 
 struct GSEVec2 {
 	float x = 0.f, y = 0.f;

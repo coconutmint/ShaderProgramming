@@ -16,7 +16,7 @@ CGame::CGame(GSEVec2 size)
 	m_heroID = m_objectMgr->AddObject(heroobjPos, heroobjSize, heroobjVel, heroobjAcc, heroobjMass);
 	//test
 
-	for(int i = 0; i < MAX_OBJECT_COUNT; i++) 
+	/*for (int i = 0; i < MAX_OBJECT_COUNT; i++)
 	{
 		GSEVec3 objPos = { 0,0,0 };
 		GSEVec3 objSize = { 100,10,10 };
@@ -32,7 +32,7 @@ CGame::CGame(GSEVec2 size)
 		objVel.z = 0.f;
 
 		m_objectMgr->AddObject(objPos, objSize, objVel, objAcc, objMass);
-	}
+	}*/
 }
 CGame::~CGame()
 {
@@ -90,7 +90,11 @@ void CGame::UpdateObjects(GSEKeyboardMapper keyMap, float eTime)
 	heroForceDirection.x *= movingHeroForce;
 	heroForceDirection.y *= movingHeroForce;
 	heroForceDirection.z *= movingHeroForce;
-	m_objectMgr->AddForce(m_heroID, heroForceDirection, eTime);
+
+	if (keyMap.W_Key || keyMap.A_Key || keyMap.S_Key || keyMap.D_Key)
+	{
+		m_objectMgr->AddForce(m_heroID, heroForceDirection, eTime);
+	}
 
 	if (m_objectMgr != NULL)
 	{
