@@ -69,7 +69,7 @@ void CGame::RenderScene()
 void CGame::UpdateObjects(GSEKeyboardMapper keyMap, float eTime)
 {
 	//add force
-	float movingHeroForce = 100.f;
+	float movingHeroForce = 1500.f;
 	GSEVec3 heroForceDirection;
 	if (keyMap.W_Key)
 	{

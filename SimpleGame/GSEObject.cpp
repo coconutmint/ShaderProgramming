@@ -10,7 +10,7 @@ GSEObject::GSEObject(GSEVec3 pos, GSEVec3 size, GSEVec3 vel, GSEVec3 acc, float 
 	m_vel = vel;
 	m_acc = acc;
 	m_mass = mass;
-	m_fricCoef = 0.05f;
+	m_fricCoef = 0.5f;
 }
 
 GSEObject::~GSEObject()
@@ -21,14 +21,10 @@ void GSEObject::Update(float eTime)
 {
 	float normalForce = m_mass * GRAVITY;
 	float fric = m_fricCoef * normalForce;
-	std::cout << m_vel.x << std::endl;
-	std::cout << m_vel.y << std::endl;
 	float mag = sqrtf(m_vel.x * m_vel.x + m_vel.y * m_vel.y);
 	
 
-	std::cout << "dddddddddddddddddddddd" << std::endl;
-	std::cout << m_vel.x << std::endl;
-	std::cout << m_vel.y << std::endl;
+	
 	if (mag > FLT_EPSILON)
 	{
 		GSEVec3 velDir = { m_vel.x / mag, m_vel.y / mag };
@@ -38,6 +34,26 @@ void GSEObject::Update(float eTime)
 		velDir.y *= fric;
 		velDir.x /= m_mass;
 		velDir.y /= m_mass;
+		GSEVec2 resultVel = { 0,0 };
+		resultVel.x = m_vel.x + velDir.x;
+		resultVel.y = m_vel.y + velDir.y;
+
+		if (resultVel.x * m_vel.x < 0.f)
+		{
+			m_vel.x = 0.f;
+		}
+		else
+		{
+			m_vel.x += velDir.x;
+		}
+		if (resultVel.y * m_vel.y < 0.f)
+		{
+			m_vel.y = 0.f;
+		}
+		else
+		{
+			m_vel.y += velDir.y;
+		}
 		m_vel.x += velDir.x;
 		m_vel.y += velDir.y;
 	}
@@ -49,10 +65,11 @@ void GSEObject::Update(float eTime)
 	m_pos.x = m_pos.x + m_vel.x * eTime;
 	m_pos.y = m_pos.y + m_vel.y * eTime;
 	m_pos.z = m_pos.z + m_vel.z * eTime;
+//	std::cout << "x velocity: " << m_vel.x << std::endl;
 }
 
 GSEVec3 GSEObject::GetPos()
-{
+{ 
 	return m_pos;
 }
 
@@ -120,5 +137,4 @@ void GSEObject::AddForce(GSEVec3 force, float eTime)
 	m_vel.x += acc.x * eTime;
 	m_vel.y += acc.y * eTime;
 	m_vel.z += acc.z * eTime;
-	std::cout << "----------" << m_vel.x << std::endl;
-}
+	}
