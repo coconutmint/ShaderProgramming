@@ -14,8 +14,8 @@ CGame::CGame(GSEVec2 size)
 	GSEVec3 heroobjAcc = { 0,0,0 };
 	float  heroobjMass = 1.f;
 	m_heroID = m_objectMgr->AddObject(heroobjPos, heroobjSize, heroobjVel, heroobjAcc, heroobjMass);
+	
 	//test
-
 	/*for (int i = 0; i < MAX_OBJECT_COUNT; i++)
 	{
 		GSEVec3 objPos = { 0,0,0 };
@@ -69,6 +69,8 @@ void CGame::RenderScene()
 void CGame::UpdateObjects(GSEKeyboardMapper keyMap, float eTime)
 {
 	//add force
+	if (keyMap.W_Key || keyMap.A_Key || keyMap.S_Key || keyMap.D_Key)
+	{
 	float movingHeroForce = 1500.f;
 	GSEVec3 heroForceDirection;
 	if (keyMap.W_Key)
@@ -90,12 +92,46 @@ void CGame::UpdateObjects(GSEKeyboardMapper keyMap, float eTime)
 	heroForceDirection.x *= movingHeroForce;
 	heroForceDirection.y *= movingHeroForce;
 	heroForceDirection.z *= movingHeroForce;
-
-	if (keyMap.W_Key || keyMap.A_Key || keyMap.S_Key || keyMap.D_Key)
-	{
-		m_objectMgr->AddForce(m_heroID, heroForceDirection, eTime);
+	m_objectMgr->AddForce(m_heroID, heroForceDirection, eTime);
 	}
 
+	//Fire bullet
+	if (keyMap.Up_Key || keyMap.Down_Key || keyMap.Left_Key || keyMap.Right_Key)
+	{
+		GSEVec3 bulletobjPos = { 0,0,0 };
+		GSEVec3 bulletobjSize = { 10,10,10 };
+		GSEVec3 bulletobjVel = { 0,0,0 };
+		GSEVec3 bulletobjAcc = { 0,0,0 };
+		float  bulletobjMass = 0.1f;
+		int bulletID = m_objectMgr->AddObject(bulletobjPos, bulletobjSize, bulletobjVel, bulletobjAcc, bulletobjMass);
+		float firingBulletForce = 1000.f;
+		GSEVec3 bulletForceDirection;
+		if (keyMap.Up_Key)
+		{
+			bulletForceDirection.y += 1.f;
+		}
+		if (keyMap.Left_Key)
+		{
+			bulletForceDirection.x -= 1.f;
+		}
+		if (keyMap.Down_Key)
+		{
+			bulletForceDirection.y -= 1.f;
+		}
+		if (keyMap.Right_Key)
+		{
+			bulletForceDirection.x += 1.f;
+		}
+		bulletForceDirection.x *= firingBulletForce;
+		bulletForceDirection.y *= firingBulletForce;
+		bulletForceDirection.z *= firingBulletForce;
+		GSEVec3 heroPos;
+		heroPos = m_objectMgr->GetObject(m_heroID).GetPos();
+		m_objectMgr->GetObject(bulletID).SetPos(heroPos);
+		m_objectMgr->AddForce(bulletID, bulletForceDirection, 0.1f);
+		
+	}
+	//Update
 	if (m_objectMgr != NULL)
 	{
 		m_objectMgr->UpdateObjects(eTime);

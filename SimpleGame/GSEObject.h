@@ -21,6 +21,8 @@ public:
 	void SetMass(float in);
 	float GetFricCoef();
 	void SetFricCoef(float in);
+	int GetTypef();
+	void SetTypef(float in);
 
 	void AddForce(GSEVec3 force, float eTime);
 
@@ -31,5 +33,6 @@ private:
 	GSEVec3 m_acc;
 	float   m_mass;
 	float	m_fricCoef;
+	int		m_type;
 };
 

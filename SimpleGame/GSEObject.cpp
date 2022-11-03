@@ -11,6 +11,7 @@ GSEObject::GSEObject(GSEVec3 pos, GSEVec3 size, GSEVec3 vel, GSEVec3 acc, float 
 	m_acc = acc;
 	m_mass = mass;
 	m_fricCoef = 0.5f;
+	m_type = OBJ_TYPE_NORMAL;
 }
 
 GSEObject::~GSEObject()
@@ -126,6 +127,16 @@ float GSEObject::GetFricCoef()
 void GSEObject::SetFricCoef(float in)
 {
 	m_fricCoef = in;
+}
+
+int GSEObject::GetTypef()
+{
+	return m_type;
+}
+
+void GSEObject::SetTypef(float in)
+{
+	m_type = in;
 }
 
 void GSEObject::AddForce(GSEVec3 force, float eTime)

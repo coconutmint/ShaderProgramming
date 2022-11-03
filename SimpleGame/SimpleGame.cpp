@@ -57,7 +57,7 @@ void KeyInput(unsigned char key, int x, int y)
 		g_keyMapper.D_Key = true;
 		break;
 	}
-	RenderScene();
+// 	RenderScene();
 }
 
 void KeyUpInput(unsigned char key, int x, int y)
@@ -77,16 +77,46 @@ void KeyUpInput(unsigned char key, int x, int y)
 		g_keyMapper.D_Key = false;
 		break;
 	}
-	RenderScene();
+//	RenderScene();
 }
 
 void SpecialKeyInput(int key, int x, int y)
 {
-	RenderScene();
+	switch (key)
+	{
+	case GLUT_KEY_UP:
+		g_keyMapper.Up_Key = true;
+		break;
+	case GLUT_KEY_DOWN:
+		g_keyMapper.Down_Key = true;
+		break;
+	case GLUT_KEY_RIGHT:
+		g_keyMapper.Right_Key = true;
+		break;
+	case GLUT_KEY_LEFT:
+		g_keyMapper.Left_Key = true;
+		break;
+	}
+//	RenderScene();
 }
 void SpecialKeyUpInput(int key, int x, int y)
 {
-	RenderScene();
+	switch (key)
+	{
+	case GLUT_KEY_UP:
+		g_keyMapper.Up_Key = false;
+		break;
+	case GLUT_KEY_DOWN:
+		g_keyMapper.Down_Key = false;
+		break;
+	case GLUT_KEY_RIGHT:
+		g_keyMapper.Right_Key = false;
+		break;
+	case GLUT_KEY_LEFT:
+		g_keyMapper.Left_Key = false;
+		break;
+	}
+//	RenderScene();
 }
 
 int main(int argc, char** argv)

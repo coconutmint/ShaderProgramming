@@ -36,7 +36,7 @@ int GSEObjectMgr::AddObject(GSEVec3 pos, GSEVec3 size, GSEVec3 vel, GSEVec3 acc,
 
 GSEObject GSEObjectMgr::GetObject(int index)
 {
-	GSEVec3 pos = { 0,0,0 };
+	GSEVec3 pos = {0,0,0};
 	GSEVec3 size = { 0,0,0 };
 	GSEVec3 vel = { 0,0,0 };
 	GSEVec3 acc = { 0,0,0 };
@@ -54,6 +54,7 @@ GSEObject GSEObjectMgr::GetObject(int index)
 	}
 	//return NULL;
 	return temp;
+	
 }
 
 bool GSEObjectMgr::DeleteObject(int index) //GSO매니저의 소멸자에서만 사용했다
