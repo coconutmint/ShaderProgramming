@@ -4,7 +4,8 @@
 class GSEObject
 {
 public:
-	GSEObject(GSEVec3 pos, GSEVec3 size, GSEVec3 vel, GSEVec3 acc, float mass);
+	GSEObject(GSEVec3 pos, GSEVec3 
+		, GSEVec3 vel, GSEVec3 acc, float mass);
 	~GSEObject();
 
 	void Update(float eTime);
@@ -21,8 +22,8 @@ public:
 	void SetMass(float in);
 	float GetFricCoef();
 	void SetFricCoef(float in);
-	int GetTypef();
-	void SetTypef(float in);
+	int GetType();
+	void SetType(float in);
 
 	void AddForce(GSEVec3 force, float eTime);
 

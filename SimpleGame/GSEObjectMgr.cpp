@@ -34,9 +34,18 @@ int GSEObjectMgr::AddObject(GSEVec3 pos, GSEVec3 size, GSEVec3 vel, GSEVec3 acc,
 	return index;
 }
 
-GSEObject GSEObjectMgr::GetObject(int index)
+GSEObject* GSEObjectMgr::GetObject(int index)
 {
-	GSEVec3 pos = {0,0,0};
+	
+	if (m_objects[index] != NULL)
+	{
+		return m_objects[index];
+	}
+	//log required
+	//assertion
+	return NULL;
+
+/*	GSEVec3 pos = {0,0,0};
 	GSEVec3 size = { 0,0,0 };
 	GSEVec3 vel = { 0,0,0 };
 	GSEVec3 acc = { 0,0,0 };
@@ -53,7 +62,7 @@ GSEObject GSEObjectMgr::GetObject(int index)
 		//log
 	}
 	//return NULL;
-	return temp;
+	return temp;*/
 	
 }
 
@@ -99,5 +108,30 @@ void GSEObjectMgr::AddForce(int index, GSEVec3 force, float eTime)
 	if (m_objects[index] != NULL)
 	{
 		m_objects[index]->AddForce(force, eTime);
+	}
+}
+
+void GSEObjectMgr::DoGarbageCollect()
+{
+	for (int i = 0; i < MAX_OBJECT_COUNT; ++i)
+	{
+		if (m_objects[i] != NULL)
+		{
+			//check destroy status
+			//bullet : type, velocity
+			if (m_objects[i]->GetType() == OBJ_TYPE_BULLET)
+			{
+				GSEVec3 vel = m_objects[i]->GetVel();
+				float size = std::sqrtf(vel.x * vel.x + vel.y * vel.y);
+			//	std::cout << size << std::endl;
+				if (size < FLT_EPSILON)
+				{
+					DeleteObject(i);
+				}
+			}
+
+			
+			//delete object
+		}
 	}
 }

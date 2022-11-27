@@ -91,7 +91,7 @@ void GSEObject::SetSize(GSEVec3 in)
 
 GSEVec3 GSEObject::GetVel()
 {
-	return GSEVec3();
+	return m_vel;
 }
 
 void GSEObject::SetVel(GSEVec3 in)
@@ -101,7 +101,7 @@ void GSEObject::SetVel(GSEVec3 in)
 
 GSEVec3 GSEObject::GetAcc()
 {
-	return GSEVec3();
+	return m_acc;
 }
 
 void GSEObject::SetAcc(GSEVec3 in)
@@ -129,12 +129,12 @@ void GSEObject::SetFricCoef(float in)
 	m_fricCoef = in;
 }
 
-int GSEObject::GetTypef()
+int GSEObject::GetType()
 {
 	return m_type;
 }
 
-void GSEObject::SetTypef(float in)
+void GSEObject::SetType(float in)
 {
 	m_type = in;
 }
