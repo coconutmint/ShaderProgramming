@@ -1,8 +1,8 @@
 #include "stdafx.h"
-#include "CGame.h"
+#include "GSEGame.h"
 #include "GSEObject.h"
 
-CGame::CGame(GSEVec2 size)
+GSEGame::GSEGame(GSEVec2 size)
 {
 	m_renderer = new Renderer((int)size.x, (int)size.y);
 	m_objectMgr = new GSEObjectMgr();
@@ -35,7 +35,7 @@ CGame::CGame(GSEVec2 size)
 		m_objectMgr->AddObject(objPos, objSize, objVel, objAcc, objMass);
 	}*/
 }
-CGame::~CGame()
+GSEGame::~GSEGame()
 {
 	if (m_renderer)
 	{
@@ -49,7 +49,7 @@ CGame::~CGame()
 	}
 }
 
-void CGame::RenderScene()
+void GSEGame::RenderScene()
 {
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 	glClearColor(0.0f, 0.3f, 0.3f, 1.0f);
@@ -70,7 +70,7 @@ void CGame::RenderScene()
 	}
 }
 
-void CGame::UpdateObjects(GSEKeyboardMapper keyMap, float eTime)
+void GSEGame::UpdateObjects(GSEKeyboardMapper keyMap, float eTime)
 {
 	//add force
 	if (keyMap.W_Key || keyMap.A_Key || keyMap.S_Key || keyMap.D_Key)

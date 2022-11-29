@@ -4,12 +4,12 @@
 #include "GSEObjectMgr.h"
 #include <iostream>
 
-class CGame
+class GSEGame
 {
 
 public:
-	CGame(GSEVec2 size);
-	~CGame();
+	GSEGame(GSEVec2 size);
+	~GSEGame();
 	void RenderScene();
 	void UpdateObjects(GSEKeyboardMapper keyMap, float eTime);
 

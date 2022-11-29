@@ -12,10 +12,10 @@ but WITHOUT ANY WARRANTY.
 #include "Dependencies\glew.h"
 #include "Dependencies\freeglut.h"
 
-#include "CGame.h"
+#include "GSEGame.h"
 #include "Global.h"
 
-CGame* g_game = NULL;
+GSEGame* g_game = NULL;
 float g_prevTime = 0;
 GSEKeyboardMapper g_keyMapper;
 
@@ -139,7 +139,7 @@ int main(int argc, char** argv)
 	}
 
 	GSEVec2 temp = { 500.f,500.f };
-	g_game = new CGame(temp);
+	g_game = new GSEGame(temp);
 
 	glutDisplayFunc(RenderScene);
 	glutIdleFunc(Idle);
