@@ -24,8 +24,12 @@ public:
 	void SetFricCoef(float in);
 	int GetType();
 	void SetType(float in);
+	float GetCoolTime();
+	void SetCoolTime(float in);
 
 	void AddForce(GSEVec3 force, float eTime);
+	bool CanFire();
+	void ResetCoolTime();
 
 private:
 	GSEVec3 m_pos;
@@ -35,5 +39,8 @@ private:
 	float   m_mass;
 	float	m_fricCoef;
 	int		m_type;
+	float	m_coolTime;
+	float	m_coolTime_remaining;
+
 };
 

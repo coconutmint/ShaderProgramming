@@ -94,7 +94,7 @@ int GSEObjectMgr::FindEmptySlot()
 
 void GSEObjectMgr::UpdateObjects(float eTime)
 {
-	for (int i = 0; i < MAX_OBJECT_COUNT; ++i)
+	for (int i = 0; i < MAX_OBJECT_COUNT; i++)
 	{
 		if (m_objects[i] != NULL)
 		{

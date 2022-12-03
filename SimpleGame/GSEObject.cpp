@@ -12,6 +12,9 @@ GSEObject::GSEObject(GSEVec3 pos, GSEVec3 size, GSEVec3 vel, GSEVec3 acc, float 
 	m_mass = mass;
 	m_fricCoef = 0.5f;
 	m_type = OBJ_TYPE_NORMAL;
+
+	m_coolTime = 0.5f;
+	m_coolTime_remaining = 0.f;
 }
 
 GSEObject::~GSEObject()
@@ -67,6 +70,13 @@ void GSEObject::Update(float eTime)
 	m_pos.y = m_pos.y + m_vel.y * eTime;
 	m_pos.z = m_pos.z + m_vel.z * eTime;
 //	std::cout << "x velocity: " << m_vel.x << std::endl;
+
+//cool time 
+	m_coolTime_remaining -= eTime;
+	if (m_coolTime_remaining < FLT_EPSILON)
+	{
+		m_coolTime_remaining = 0.f;
+	}
 }
 
 GSEVec3 GSEObject::GetPos()
@@ -139,6 +149,16 @@ void GSEObject::SetType(float in)
 	m_type = in;
 }
 
+float GSEObject::GetCoolTime()
+{
+	return m_coolTime;
+}
+
+void GSEObject::SetCoolTime(float in)
+{
+	m_coolTime = in;
+}
+
 void GSEObject::AddForce(GSEVec3 force, float eTime)
 {
 	GSEVec3 acc;
@@ -149,3 +169,17 @@ void GSEObject::AddForce(GSEVec3 force, float eTime)
 	m_vel.y += acc.y * eTime;
 	m_vel.z += acc.z * eTime;
 	}
+
+bool GSEObject::CanFire()
+{
+	if (m_coolTime_remaining < FLT_EPSILON)
+	{
+		return true;
+	}
+	return false;
+}
+
+void GSEObject::ResetCoolTime()
+{
+	m_coolTime_remaining = m_coolTime;
+}

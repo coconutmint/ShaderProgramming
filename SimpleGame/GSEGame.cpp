@@ -100,7 +100,8 @@ void GSEGame::UpdateObjects(GSEKeyboardMapper keyMap, float eTime)
 	}
 
 	//Fire bullet
-	if (keyMap.Up_Key || keyMap.Down_Key || keyMap.Left_Key || keyMap.Right_Key)
+	bool b_canFire = m_objectMgr->GetObject(m_heroID)->CanFire();
+	if ((keyMap.Up_Key || keyMap.Down_Key || keyMap.Left_Key || keyMap.Right_Key) && b_canFire)
 	{
 
 		float firingBulletForce = 1000.f;
@@ -142,6 +143,8 @@ void GSEGame::UpdateObjects(GSEKeyboardMapper keyMap, float eTime)
 				m_objectMgr->GetObject(bulletID)->SetFricCoef(2.f);
 				m_objectMgr->GetObject(bulletID)->SetType(OBJ_TYPE_BULLET);
 				m_objectMgr->AddForce(bulletID, bulletForceDirection, 0.1f);
+				m_objectMgr->GetObject(m_heroID)->ResetCoolTime();
+			
 			}
 		}
 			
