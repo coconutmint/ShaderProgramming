@@ -32,6 +32,8 @@ public:
 	bool IsAncester(GSEObject* in);
 	int GetHP();
 	void SetHP(float in);
+	int GetTextureID();
+	void SetTextureID(float in);
 
 	void AddForce(GSEVec3 force, float eTime);
 	bool CanFire();
@@ -50,7 +52,7 @@ private:
 	GSEVec4 m_color;
 	GSEObject* m_parent = NULL;
 	int		m_HP = 0;
-
+	int m_textureID = -1;
 
 };
 

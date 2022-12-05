@@ -181,8 +181,16 @@
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
+    <None Include="Shaders\Particle.fs" />
+    <None Include="Shaders\Particle.vs" />
     <None Include="Shaders\SolidRect.fs" />
     <None Include="Shaders\SolidRect.vs" />
+    <None Include="Shaders\SolidRectGauge.fs" />
+    <None Include="Shaders\SolidRectGauge.vs" />
+    <None Include="Shaders\TextureRect.fs" />
+    <None Include="Shaders\TextureRect.vs" />
+    <None Include="Shaders\TextureRectAnim.fs" />
+    <None Include="Shaders\TextureRectAnim.vs" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

@@ -17,5 +17,7 @@ private:
 	Renderer* m_renderer = NULL;
 	GSEObjectMgr* m_objectMgr = NULL;
 	int m_heroID = -1;
+	int m_heroTextureID = -1;
+	int m_bulletTextureID = -1;
 };
 

@@ -7,9 +7,13 @@ GSEGame::GSEGame(GSEVec2 size)
 	m_renderer = new Renderer((int)size.x, (int)size.y);
 	m_objectMgr = new GSEObjectMgr();
 
+	//create Textures
+	m_heroTextureID = m_renderer->GenPngTexture("./Textures/dd.png");
+	m_bulletTextureID = m_renderer->GenPngTexture("./Textures/dd.png");
+
 	//Create hero object
 	GSEVec3 heroobjPos = { 0,0,0 };
-	GSEVec3 heroobjSize = { 20,20,20 };
+	GSEVec3 heroobjSize = { 120,120,40 };
 	GSEVec3 heroobjVel = { 0,0,0 };
 	GSEVec3 heroobjAcc = { 0,0,0 };
 	float  heroobjMass = 1.f;
@@ -17,6 +21,7 @@ GSEGame::GSEGame(GSEVec2 size)
 	m_heroID = m_objectMgr->AddObject(heroobjPos, heroobjSize, heroobjVel, heroobjAcc, heroobjMass);
 	m_objectMgr->GetObject(m_heroID)->SetType(OBJ_TYPE_HERO);
 	m_objectMgr->GetObject(m_heroID)->SetHP(heroHP);
+	m_objectMgr->GetObject(m_heroID)->SetTextureID(m_heroTextureID);
 
 	//Create temp object
 	GSEVec3 testobjPos = { 100,0,0 };
@@ -40,6 +45,9 @@ GSEGame::GSEGame(GSEVec2 size)
 	testObjID = m_objectMgr->AddObject(testobjPos, testobjSize, testobjVel, testobjAcc, heroobjMass);
 	m_objectMgr->GetObject(testObjID)->SetType(OBJ_TYPE_NORMAL);
 	m_objectMgr->GetObject(testObjID)->SetHP(testHP);
+	
+	//m_bulletTextureID = -1;
+	
 	//test
 	/*for (int i = 0; i < MAX_OBJECT_COUNT; i++)
 	{
@@ -64,12 +72,18 @@ GSEGame::~GSEGame()
 	if (m_renderer)
 	{
 		delete m_renderer;
-		m_renderer = NULL;
 	}
 	if (m_objectMgr)
 	{
 		delete m_objectMgr;
-		m_objectMgr = NULL;
+	}
+	if (m_heroTextureID >= 0)
+	{
+		m_renderer->DeleteTexture(m_heroTextureID);
+	}
+	if (m_bulletTextureID >= 0)
+	{
+		m_renderer->DeleteTexture(m_bulletTextureID);
 	}
 }
 
@@ -90,11 +104,23 @@ void GSEGame::RenderScene()
 
 			if (size.x > 0.0000001f) //float 값이 가질 수 있는 가장 작은 값 넣는 변수 넣기
 			{
+				int textureID = temp->GetTextureID();
 				//m_renderer->DrawSolidRect(pos.x, pos.y, pos.z, size.x, color.x, color.y, color.z, color.w);
-				m_renderer->DrawSolidRect(
-					pos.x, pos.y, pos.z, 
-					size.x, size.y, size.z,
-					color.x, color.y, color.z, color.w);
+				if (textureID < 0)
+				{
+					m_renderer->DrawSolidRect(
+						pos.x, pos.y, pos.z,
+						size.x, size.y, size.z,
+						color.x, color.y, color.z, color.w);
+				}
+				else
+				{
+					m_renderer->DrawTextureRect(
+						pos.x, pos.y, pos.z,
+						size.x, size.y, size.z,
+						color.x, color.y, color.z, color.w,
+						textureID);
+				}
 			}
 		}
 	}
@@ -174,7 +200,8 @@ void GSEGame::UpdateObjects(GSEKeyboardMapper keyMap, float eTime)
 				m_objectMgr->GetObject(bulletID)->SetType(OBJ_TYPE_BULLET);
 				m_objectMgr->AddForce(bulletID, bulletForceDirection, 0.1f);
 				m_objectMgr->GetObject(bulletID)->SetParent(m_objectMgr->GetObject(m_heroID));
-				m_objectMgr->GetObject(m_heroID)->SetHP(200);
+				m_objectMgr->GetObject(bulletID)->SetHP(200);
+				m_objectMgr->GetObject(bulletID)->SetTextureID(m_bulletTextureID);
 				m_objectMgr->GetObject(m_heroID)->ResetCoolTime();
 			
 			}
@@ -183,6 +210,7 @@ void GSEGame::UpdateObjects(GSEKeyboardMapper keyMap, float eTime)
 	//collision test
 	bool testResult[MAX_OBJECT_COUNT];
 	memset(testResult, 0, sizeof(bool) * MAX_OBJECT_COUNT);
+
 	for (int i = 0; i < MAX_OBJECT_COUNT; i++)
 	{
 		for (int j = i + 1; j < MAX_OBJECT_COUNT; j++)

@@ -11,6 +11,7 @@ in vec2 vTexPos;
 void main()
 {
 	FragColor = vec4(u_Color.r, u_Color.g, u_Color.b, u_Color.a);
-    FragColor *= texture(u_Texture, vTexPos);
+    vec2 newTexPos = vec2(vTexPos.x, 1.0-vTexPos.y);
+	FragColor *= texture(u_Texture, vTexPos);
 	gl_FragDepth = u_Depth + floor(1.0-FragColor.a);
 }

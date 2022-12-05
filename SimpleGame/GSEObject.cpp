@@ -193,6 +193,16 @@ void GSEObject::SetHP(float in)
 	m_HP = in;
 }
 
+int GSEObject::GetTextureID()
+{
+	return m_textureID;
+}
+
+void GSEObject::SetTextureID(float in)
+{
+	m_textureID = in;
+}
+
 void GSEObject::AddForce(GSEVec3 force, float eTime)
 {
 	GSEVec3 acc;
