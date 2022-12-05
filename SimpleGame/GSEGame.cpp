@@ -9,13 +9,37 @@ GSEGame::GSEGame(GSEVec2 size)
 
 	//Create hero object
 	GSEVec3 heroobjPos = { 0,0,0 };
-	GSEVec3 heroobjSize = { 100,10,10 };
+	GSEVec3 heroobjSize = { 20,20,20 };
 	GSEVec3 heroobjVel = { 0,0,0 };
 	GSEVec3 heroobjAcc = { 0,0,0 };
 	float  heroobjMass = 1.f;
+	int  heroHP = 1000;
 	m_heroID = m_objectMgr->AddObject(heroobjPos, heroobjSize, heroobjVel, heroobjAcc, heroobjMass);
 	m_objectMgr->GetObject(m_heroID)->SetType(OBJ_TYPE_HERO);
+	m_objectMgr->GetObject(m_heroID)->SetHP(heroHP);
 
+	//Create temp object
+	GSEVec3 testobjPos = { 100,0,0 };
+	GSEVec3 testobjSize = { 10,10,10 };
+	GSEVec3 testobjVel = { 0,0,0 };
+	GSEVec3 testobjAcc = { 0,0,0 };
+	float  testobjMass = 1.f;
+	int  testHP = 300;
+	int testObjID = m_objectMgr->AddObject(testobjPos, testobjSize, testobjVel, testobjAcc, heroobjMass);
+	m_objectMgr->GetObject(testObjID)->SetType(OBJ_TYPE_NORMAL);
+	m_objectMgr->GetObject(testObjID)->SetHP(testHP);
+	testobjPos.x = 100;
+	testobjPos.y = 100;
+	testobjPos.z = 0;
+	testObjID = m_objectMgr->AddObject(testobjPos, testobjSize, testobjVel, testobjAcc, heroobjMass);
+	m_objectMgr->GetObject(testObjID)->SetType(OBJ_TYPE_NORMAL);
+	m_objectMgr->GetObject(testObjID)->SetHP(testHP);
+	testobjPos.x = -100;
+	testobjPos.y = -100;
+	testobjPos.z = 0;
+	testObjID = m_objectMgr->AddObject(testobjPos, testobjSize, testobjVel, testobjAcc, heroobjMass);
+	m_objectMgr->GetObject(testObjID)->SetType(OBJ_TYPE_NORMAL);
+	m_objectMgr->GetObject(testObjID)->SetHP(testHP);
 	//test
 	/*for (int i = 0; i < MAX_OBJECT_COUNT; i++)
 	{
@@ -62,9 +86,15 @@ void GSEGame::RenderScene()
 		{
 			GSEVec3 pos = temp->GetPos();
 			GSEVec3 size = temp->GetSize();
+			GSEVec4 color = temp->GetColor();
+
 			if (size.x > 0.0000001f) //float 값이 가질 수 있는 가장 작은 값 넣는 변수 넣기
 			{
-				m_renderer->DrawSolidRect(pos.x, pos.y, pos.z, size.x, 1, 0, 1, 1);
+				//m_renderer->DrawSolidRect(pos.x, pos.y, pos.z, size.x, color.x, color.y, color.z, color.w);
+				m_renderer->DrawSolidRect(
+					pos.x, pos.y, pos.z, 
+					size.x, size.y, size.z,
+					color.x, color.y, color.z, color.w);
 			}
 		}
 	}
@@ -143,14 +173,82 @@ void GSEGame::UpdateObjects(GSEKeyboardMapper keyMap, float eTime)
 				m_objectMgr->GetObject(bulletID)->SetFricCoef(2.f);
 				m_objectMgr->GetObject(bulletID)->SetType(OBJ_TYPE_BULLET);
 				m_objectMgr->AddForce(bulletID, bulletForceDirection, 0.1f);
+				m_objectMgr->GetObject(bulletID)->SetParent(m_objectMgr->GetObject(m_heroID));
+				m_objectMgr->GetObject(m_heroID)->SetHP(200);
 				m_objectMgr->GetObject(m_heroID)->ResetCoolTime();
 			
 			}
 		}
-			
-		
-		
 	}
+	//collision test
+	bool testResult[MAX_OBJECT_COUNT];
+	memset(testResult, 0, sizeof(bool) * MAX_OBJECT_COUNT);
+	for (int i = 0; i < MAX_OBJECT_COUNT; i++)
+	{
+		for (int j = i + 1; j < MAX_OBJECT_COUNT; j++)
+		{
+			if (m_objectMgr->GetObject(i) == NULL || m_objectMgr->GetObject(j) == NULL)
+			{
+				continue;
+			}
+
+			//get min, max value of object
+			GSEVec3 objASize = m_objectMgr->GetObject(i)->GetSize();
+			GSEVec3 objAPos = m_objectMgr->GetObject(i)->GetPos();
+			GSEVec3 objAMin = {objAPos.x - objASize.x / 2.f, objAPos.y - objASize.y / 2.f, objAPos.z - objASize.z / 2.f};
+			GSEVec3 objAMax = {objAPos.x + objASize.x / 2.f, objAPos.y + objASize.y / 2.f, objAPos.z + objASize.z / 2.f};
+			GSEVec3 objBSize = m_objectMgr->GetObject(j)->GetSize();
+			GSEVec3 objBPos = m_objectMgr->GetObject(j)->GetPos();
+			GSEVec3 objBMin = { objBPos.x - objBSize.x / 2.f, objBPos.y - objBSize.y / 2.f, objBPos.z - objBSize.z / 2.f };
+			GSEVec3 objBMax = { objBPos.x + objBSize.x / 2.f, objBPos.y + objBSize.y / 2.f, objBPos.z + objBSize.z / 2.f };
+
+			bool isCollide = BBCollision(objAMin, objAMax, objBMin, objBMax);
+			bool isParent = m_objectMgr->GetObject(i)->IsAncester(m_objectMgr->GetObject(j)) ||
+							m_objectMgr->GetObject(j)->IsAncester(m_objectMgr->GetObject(i));
+			if (isCollide && !isParent)
+			{
+				GSEObject* A1 = m_objectMgr->GetObject(i);
+				GSEObject* A2 = m_objectMgr->GetObject(j);
+				float m1 = A1->GetMass();
+				float m2 = A2->GetMass();
+				GSEVec3 vel1 = A1->GetVel();
+				GSEVec3 vel2 = A2->GetVel();
+				float finalVelX1 = ((m1 - m2) / (m1 + m2)) * vel1.x + ((2.f*m2)/(m1+m2))*vel2.x;
+				float finalVelY1 = ((m1 - m2) / (m1 + m2)) * vel1.y + ((2.f*m2)/(m1+m2))*vel2.y;
+				float finalVelX2 = ((2.f*m1) / (m1 + m2)) * vel1.x + ((m2-m1) / (m1 + m2)) * vel2.x;
+				float finalVelY2 = ((2.f * m1) / (m1 + m2)) * vel1.y + ((m2 - m1) / (m1 + m2)) * vel2.y;
+				GSEVec3 temp = { finalVelX1, finalVelY1, vel1.z };
+				A1->SetVel(temp); 
+				GSEVec3 temp1 = { finalVelX2, finalVelY2, vel2.z };
+				A2->SetVel(temp);
+
+				int HP1 = A1->GetHP();
+				int HP2 = A2->GetHP();
+				A1->SetHP(HP1 - HP2);
+				A2->SetHP(HP2 - HP1);
+
+				testResult[i] = true;
+				testResult[j] = true;
+			}
+		}
+	}
+	for (int i = 0; i < MAX_OBJECT_COUNT; i++) 
+	{
+		if (m_objectMgr->GetObject(i) != NULL)
+		{
+			if (testResult[i])
+			{
+				GSEVec4 colColor = { 1,0,0,1 };
+				m_objectMgr->GetObject(i)->SetColor(colColor);
+			}
+			else
+			{
+				GSEVec4 colColor = { 1,1,1,1 };
+				m_objectMgr->GetObject(i)->SetColor(colColor);
+			}
+		}
+	}
+
 	//Update
 	if (m_objectMgr != NULL)
 	{
@@ -162,4 +260,22 @@ void GSEGame::UpdateObjects(GSEKeyboardMapper keyMap, float eTime)
 		std::cout << "m_objectMgr is NULL" << std::endl;
 	}
 	m_objectMgr->DoGarbageCollect();
+}
+
+bool GSEGame::BBCollision(GSEVec3 minA, GSEVec3 maxA, GSEVec3 minB, GSEVec3 maxB)
+{
+	if (minA.x > maxB.x)
+		return false;
+	if (maxA.x < minB.x)
+		return false;
+	if (minA.y > maxB.y)
+		return false;
+	if (maxA.y < minB.y)
+		return false;
+	if (minA.z > maxB.z)
+		return false;
+	if (maxA.z < minB.z)
+		return false;
+
+	return true;
 }

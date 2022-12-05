@@ -18,6 +18,8 @@ public:
 	void SetVel(GSEVec3 in);
 	GSEVec3 GetAcc();
 	void SetAcc(GSEVec3 in);
+	GSEVec4 GetColor();
+	void SetColor(GSEVec4 in);
 	float GetMass();
 	void SetMass(float in);
 	float GetFricCoef();
@@ -26,6 +28,10 @@ public:
 	void SetType(float in);
 	float GetCoolTime();
 	void SetCoolTime(float in);
+	void SetParent(GSEObject* in);
+	bool IsAncester(GSEObject* in);
+	int GetHP();
+	void SetHP(float in);
 
 	void AddForce(GSEVec3 force, float eTime);
 	bool CanFire();
@@ -41,6 +47,10 @@ private:
 	int		m_type;
 	float	m_coolTime;
 	float	m_coolTime_remaining;
+	GSEVec4 m_color;
+	GSEObject* m_parent = NULL;
+	int		m_HP = 0;
+
 
 };
 

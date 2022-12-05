@@ -133,5 +133,17 @@ void GSEObjectMgr::DoGarbageCollect()
 			
 			//delete object
 		}
+		if (m_objects[i] != NULL)
+		{
+			//check destroy status
+			int HP = m_objects[i]->GetHP();
+				//	std::cout << size << std::endl;
+				if (HP <= 0)
+				{
+					DeleteObject(i);
+				}
+			
+		}
+
 	}
 }

@@ -12,7 +12,7 @@ public:
 	~GSEGame();
 	void RenderScene();
 	void UpdateObjects(GSEKeyboardMapper keyMap, float eTime);
-
+	bool BBCollision(GSEVec3 minA, GSEVec3 maxA, GSEVec3 minB, GSEVec3 maxB);
 private:
 	Renderer* m_renderer = NULL;
 	GSEObjectMgr* m_objectMgr = NULL;

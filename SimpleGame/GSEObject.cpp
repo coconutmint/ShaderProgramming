@@ -119,9 +119,19 @@ void GSEObject::SetAcc(GSEVec3 in)
 	m_acc = in;
 }
 
+GSEVec4 GSEObject::GetColor()
+{
+	return m_color;
+}
+
+void GSEObject::SetColor(GSEVec4 in)
+{
+	m_color = in;
+}
+
 float GSEObject::GetMass()
 {
-	return 0.0f;
+	return m_mass;
 }
 
 void GSEObject::SetMass(float in)
@@ -157,6 +167,30 @@ float GSEObject::GetCoolTime()
 void GSEObject::SetCoolTime(float in)
 {
 	m_coolTime = in;
+}
+
+void GSEObject::SetParent(GSEObject* in)
+{
+	m_parent = in;
+}
+
+bool GSEObject::IsAncester(GSEObject* in)
+{
+	if (in == m_parent)
+	{
+		return true;
+	}
+	return false;
+}
+
+int GSEObject::GetHP()
+{
+	return m_HP;
+}
+
+void GSEObject::SetHP(float in)
+{
+	m_HP = in;
 }
 
 void GSEObject::AddForce(GSEVec3 force, float eTime)

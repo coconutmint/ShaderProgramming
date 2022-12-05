@@ -14,6 +14,10 @@ struct GSEVec3 {
 	float x = 0.f, y = 0.f, z = 0.f;
 };
 
+struct GSEVec4 {
+	float x = 0.f, y = 0.f, z = 0.f, w = 0.f;
+};
+
 struct GSEKeyboardMapper {
 	bool W_Key = false;
 	bool A_Key = false;
