@@ -193,6 +193,16 @@ void GSEObject::SetHP(float in)
 	m_HP = in;
 }
 
+int GSEObject::GetMaxHP()
+{
+	return m_MaxHP;
+}
+
+void GSEObject::SetMaxHP(float in)
+{
+	m_MaxHP = in;
+}
+
 int GSEObject::GetTextureID()
 {
 	return m_textureID;
@@ -201,6 +211,16 @@ int GSEObject::GetTextureID()
 void GSEObject::SetTextureID(float in)
 {
 	m_textureID = in;
+}
+
+bool GSEObject::GetDrawGauge()
+{
+	return m_bDrawGauge;
+}
+
+void GSEObject::SetDrawGauge(bool in)
+{
+	m_bDrawGauge = in;
 }
 
 void GSEObject::AddForce(GSEVec3 force, float eTime)

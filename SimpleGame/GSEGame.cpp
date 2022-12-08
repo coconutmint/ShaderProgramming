@@ -10,6 +10,7 @@ GSEGame::GSEGame(GSEVec2 size)
 	//create Textures
 	m_heroTextureID = m_renderer->GenPngTexture("./Textures/dd.png");
 	m_bulletTextureID = m_renderer->GenPngTexture("./Textures/dd.png");
+	m_fireAnimTextureID = m_renderer->GenPngTexture("./Textures/gg.png");
 
 	//Create hero object
 	GSEVec3 heroobjPos = { 0,0,0 };
@@ -21,31 +22,41 @@ GSEGame::GSEGame(GSEVec2 size)
 	m_heroID = m_objectMgr->AddObject(heroobjPos, heroobjSize, heroobjVel, heroobjAcc, heroobjMass);
 	m_objectMgr->GetObject(m_heroID)->SetType(OBJ_TYPE_HERO);
 	m_objectMgr->GetObject(m_heroID)->SetHP(heroHP);
+	m_objectMgr->GetObject(m_heroID)->SetMaxHP(heroHP);
 	m_objectMgr->GetObject(m_heroID)->SetTextureID(m_heroTextureID);
+	m_objectMgr->GetObject(m_heroID)->SetDrawGauge(true);
 
 	//Create temp object
 	GSEVec3 testobjPos = { 100,0,0 };
-	GSEVec3 testobjSize = { 10,10,10 };
+	GSEVec3 testobjSize = { 60, 60, 60 };
 	GSEVec3 testobjVel = { 0,0,0 };
 	GSEVec3 testobjAcc = { 0,0,0 };
 	float  testobjMass = 1.f;
-	int  testHP = 300;
+	int  testHP = 500;
 	int testObjID = m_objectMgr->AddObject(testobjPos, testobjSize, testobjVel, testobjAcc, heroobjMass);
 	m_objectMgr->GetObject(testObjID)->SetType(OBJ_TYPE_NORMAL);
 	m_objectMgr->GetObject(testObjID)->SetHP(testHP);
+	m_objectMgr->GetObject(testObjID)->SetMaxHP(testHP);
+	m_objectMgr->GetObject(testObjID)->SetDrawGauge(true);
+
 	testobjPos.x = 100;
 	testobjPos.y = 100;
 	testobjPos.z = 0;
 	testObjID = m_objectMgr->AddObject(testobjPos, testobjSize, testobjVel, testobjAcc, heroobjMass);
 	m_objectMgr->GetObject(testObjID)->SetType(OBJ_TYPE_NORMAL);
 	m_objectMgr->GetObject(testObjID)->SetHP(testHP);
+	m_objectMgr->GetObject(testObjID)->SetMaxHP(testHP);
+	m_objectMgr->GetObject(testObjID)->SetDrawGauge(true);
+
 	testobjPos.x = -100;
 	testobjPos.y = -100;
 	testobjPos.z = 0;
 	testObjID = m_objectMgr->AddObject(testobjPos, testobjSize, testobjVel, testobjAcc, heroobjMass);
 	m_objectMgr->GetObject(testObjID)->SetType(OBJ_TYPE_NORMAL);
 	m_objectMgr->GetObject(testObjID)->SetHP(testHP);
-	
+	m_objectMgr->GetObject(testObjID)->SetMaxHP(testHP);
+	m_objectMgr->GetObject(testObjID)->SetDrawGauge(true);
+
 	//m_bulletTextureID = -1;
 	
 	//test
@@ -121,6 +132,20 @@ void GSEGame::RenderScene()
 						color.x, color.y, color.z, color.w,
 						textureID);
 				}
+
+			}
+			bool bDrawGauge = temp->GetDrawGauge();
+			if (bDrawGauge)
+			{
+				int maxHP = temp->GetMaxHP();
+				int HP = temp->GetHP();
+				float percent = 100.f*(float)HP / (float)maxHP;
+				 m_renderer->DrawSolidRectGauge(
+					pos.x, pos.y, pos.z,
+					0,size.y/2+1,0,
+					size.x, 2,10,
+					1,0,0,1,
+					(int)percent,false);
 			}
 		}
 	}
@@ -201,6 +226,7 @@ void GSEGame::UpdateObjects(GSEKeyboardMapper keyMap, float eTime)
 				m_objectMgr->AddForce(bulletID, bulletForceDirection, 0.1f);
 				m_objectMgr->GetObject(bulletID)->SetParent(m_objectMgr->GetObject(m_heroID));
 				m_objectMgr->GetObject(bulletID)->SetHP(200);
+				m_objectMgr->GetObject(bulletID)->SetMaxHP(200);
 				m_objectMgr->GetObject(bulletID)->SetTextureID(m_bulletTextureID);
 				m_objectMgr->GetObject(m_heroID)->ResetCoolTime();
 			

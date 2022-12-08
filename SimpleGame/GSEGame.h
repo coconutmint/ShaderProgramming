@@ -19,5 +19,6 @@ private:
 	int m_heroID = -1;
 	int m_heroTextureID = -1;
 	int m_bulletTextureID = -1;
+	int m_fireAnimTextureID = -1;
 };
 
