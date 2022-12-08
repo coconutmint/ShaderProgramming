@@ -2,6 +2,7 @@
 #include "Global.h"
 #include "Renderer.h"
 #include "GSEObjectMgr.h"
+#include "Sound.h"
 #include <iostream>
 
 class GSEGame
@@ -16,9 +17,13 @@ public:
 private:
 	Renderer* m_renderer = NULL;
 	GSEObjectMgr* m_objectMgr = NULL;
+	Sound* m_soundMgr = NULL;
 	int m_heroID = -1;
 	int m_heroTextureID = -1;
 	int m_bulletTextureID = -1;
 	int m_fireAnimTextureID = -1;
+	int m_bgSound = -1;
+	int m_explSound = -1;
+	int m_fireSound = -1;
 };
 

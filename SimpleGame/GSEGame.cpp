@@ -6,12 +6,19 @@ GSEGame::GSEGame(GSEVec2 size)
 {
 	m_renderer = new Renderer((int)size.x, (int)size.y);
 	m_objectMgr = new GSEObjectMgr();
+	m_soundMgr = new Sound();
 
 	//create Textures
 	m_heroTextureID = m_renderer->GenPngTexture("./Textures/dd.png");
 	m_bulletTextureID = m_renderer->GenPngTexture("./Textures/dd.png");
 	m_fireAnimTextureID = m_renderer->GenPngTexture("./Textures/gg.png");
 
+	//Create Sounds
+	m_bgSound = m_soundMgr->CreateBGSound("./Sounds/bg.mp3");
+	m_explSound = m_soundMgr->CreateShortSound("./Sounds/explosion.mp3");
+	m_fireSound = m_soundMgr->CreateShortSound("./Sounds/firing.mp3");
+
+	m_soundMgr->PlayBGSound(m_bgSound, true, 1.f);
 	//Create hero object
 	GSEVec3 heroobjPos = { 0,0,0 };
 	GSEVec3 heroobjSize = { 120,120,40 };
@@ -38,6 +45,7 @@ GSEGame::GSEGame(GSEVec2 size)
 	m_objectMgr->GetObject(testObjID)->SetHP(testHP);
 	m_objectMgr->GetObject(testObjID)->SetMaxHP(testHP);
 	m_objectMgr->GetObject(testObjID)->SetDrawGauge(true);
+	m_objectMgr->GetObject(testObjID)->SetTextureID(m_fireAnimTextureID);
 
 	testobjPos.x = 100;
 	testobjPos.y = 100;
@@ -47,6 +55,7 @@ GSEGame::GSEGame(GSEVec2 size)
 	m_objectMgr->GetObject(testObjID)->SetHP(testHP);
 	m_objectMgr->GetObject(testObjID)->SetMaxHP(testHP);
 	m_objectMgr->GetObject(testObjID)->SetDrawGauge(true);
+	m_objectMgr->GetObject(testObjID)->SetTextureID(m_fireAnimTextureID);
 
 	testobjPos.x = -100;
 	testobjPos.y = -100;
@@ -56,6 +65,7 @@ GSEGame::GSEGame(GSEVec2 size)
 	m_objectMgr->GetObject(testObjID)->SetHP(testHP);
 	m_objectMgr->GetObject(testObjID)->SetMaxHP(testHP);
 	m_objectMgr->GetObject(testObjID)->SetDrawGauge(true);
+	m_objectMgr->GetObject(testObjID)->SetTextureID(m_fireAnimTextureID);
 
 	//m_bulletTextureID = -1;
 	
@@ -123,6 +133,24 @@ void GSEGame::RenderScene()
 						pos.x, pos.y, pos.z,
 						size.x, size.y, size.z,
 						color.x, color.y, color.z, color.w);
+				}
+				else if(textureID == m_fireAnimTextureID)
+				{
+					float age = temp->GetAge();
+					float fps = 60.f;
+					int currX = (int)(age * fps )% 10;
+					int currY = ((int)(age * fps )/ 10.f);
+					
+					m_renderer->DrawTextureRectAnim(
+						 pos.x, pos.y, pos.z,
+						 size.x, size.y, size.z,
+						 color.x, color.y, color.z, color.w,
+						textureID,
+						4,
+						3,
+						currX,
+						currY, false);
+
 				}
 				else
 				{

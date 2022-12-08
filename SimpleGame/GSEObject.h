@@ -38,6 +38,8 @@ public:
 	void SetTextureID(float in);
 	bool GetDrawGauge();
 	void SetDrawGauge(bool in);
+	float GetAge();
+	void SetAge(float in);
 
 	void AddForce(GSEVec3 force, float eTime);
 	bool CanFire();
@@ -57,8 +59,9 @@ private:
 	GSEObject* m_parent = NULL;
 	int		m_HP = 0;
 	int		m_MaxHP = 0;
-	int m_textureID = -1;
-	bool m_bDrawGauge = false;
+	int		m_textureID = -1;
+	bool	m_bDrawGauge = false;
+	float	m_age = 0.f;
 
 };
 

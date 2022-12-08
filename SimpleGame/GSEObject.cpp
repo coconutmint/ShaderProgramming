@@ -77,6 +77,9 @@ void GSEObject::Update(float eTime)
 	{
 		m_coolTime_remaining = 0.f;
 	}
+
+	//age
+	m_age += eTime;
 }
 
 GSEVec3 GSEObject::GetPos()
@@ -221,6 +224,16 @@ bool GSEObject::GetDrawGauge()
 void GSEObject::SetDrawGauge(bool in)
 {
 	m_bDrawGauge = in;
+}
+
+float GSEObject::GetAge()
+{
+	return m_age;
+}
+
+void GSEObject::SetAge(float in)
+{
+	m_age = in;
 }
 
 void GSEObject::AddForce(GSEVec3 force, float eTime)
