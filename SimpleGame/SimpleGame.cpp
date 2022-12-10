@@ -125,7 +125,7 @@ int main(int argc, char** argv)
 	glutInit(&argc, argv);
 	glutInitDisplayMode(GLUT_DEPTH | GLUT_DOUBLE | GLUT_RGBA);
 	glutInitWindowPosition(0, 0);
-	glutInitWindowSize(500, 500);
+	glutInitWindowSize(700, 700);
 	glutCreateWindow("Game Software Engineering KPU");
 
 	glewInit();
@@ -138,7 +138,7 @@ int main(int argc, char** argv)
 		std::cout << "GLEW 3.0 not supported\n ";
 	}
 
-	GSEVec2 temp = { 500.f,500.f };
+	GSEVec2 temp = { 1024.f,1024.f };
 	g_game = new GSEGame(temp);
 
 	glutDisplayFunc(RenderScene);

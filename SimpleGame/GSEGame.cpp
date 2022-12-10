@@ -12,11 +12,24 @@ GSEGame::GSEGame(GSEVec2 size)
 	m_heroTextureID = m_renderer->GenPngTexture("./Textures/dd.png");
 	m_bulletTextureID = m_renderer->GenPngTexture("./Textures/dd.png");
 	m_fireAnimTextureID = m_renderer->GenPngTexture("./Textures/gg.png");
+	m_groundTextureID = m_renderer->GenPngTexture("./Textures/bg.png");
 
 	//Create Sounds
 	m_bgSound = m_soundMgr->CreateBGSound("./Sounds/bg.mp3");
 	m_explSound = m_soundMgr->CreateShortSound("./Sounds/explosion.mp3");
 	m_fireSound = m_soundMgr->CreateShortSound("./Sounds/firing.mp3");
+
+	//create particle obj
+	m_climateParticle = m_renderer->CreateParticleObject(
+	1000,
+		-800,-800,800,800,
+		3,3,7,7,
+		-3,-3,3,0);
+	m_fireParticle = m_renderer->CreateParticleObject(
+		10000,
+		0,0,0,0,
+		3, 3, 7, 7,
+		-30, -30, 30, 30);
 
 	m_soundMgr->PlayBGSound(m_bgSound, true, 1.f);
 	//Create hero object
@@ -113,6 +126,8 @@ void GSEGame::RenderScene()
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 	glClearColor(0.0f, 0.3f, 0.3f, 1.0f);
 
+	m_renderer->DrawGround(0, 0, 0, 2048, 2048,1, 1, 1, 1, 1,
+		m_groundTextureID, 1.f);
 	// Renderer Test
 	for (int i = 0; i < MAX_OBJECT_COUNT;i++)
 	{
@@ -177,6 +192,24 @@ void GSEGame::RenderScene()
 			}
 		}
 	}
+
+	m_renderer->DrawParticle(m_climateParticle,
+		0, 0, 0,
+		1,
+		1, 1, 1, 1,
+		-100, -100,
+		m_bulletTextureID,
+		1.f,
+		m_objectMgr->GetObject(m_heroID)->GetAge());
+
+	m_renderer->DrawParticle(m_fireParticle,
+		0, 0, 0,
+		1,
+		1, 1, 1, 1,
+		-500, 0,
+		m_bulletTextureID,
+		1.f,
+		m_objectMgr->GetObject(m_heroID)->GetAge());
 }
 
 void GSEGame::UpdateObjects(GSEKeyboardMapper keyMap, float eTime)
@@ -256,6 +289,9 @@ void GSEGame::UpdateObjects(GSEKeyboardMapper keyMap, float eTime)
 				m_objectMgr->GetObject(bulletID)->SetHP(200);
 				m_objectMgr->GetObject(bulletID)->SetMaxHP(200);
 				m_objectMgr->GetObject(bulletID)->SetTextureID(m_bulletTextureID);
+				
+				m_soundMgr->PlayShortSound(m_fireSound, false, 1.f);
+
 				m_objectMgr->GetObject(m_heroID)->ResetCoolTime();
 			
 			}
@@ -311,6 +347,8 @@ void GSEGame::UpdateObjects(GSEKeyboardMapper keyMap, float eTime)
 
 				testResult[i] = true;
 				testResult[j] = true;
+
+				m_soundMgr->PlayShortSound(m_explSound, false, 1.f);
 			}
 		}
 	}
@@ -341,6 +379,9 @@ void GSEGame::UpdateObjects(GSEKeyboardMapper keyMap, float eTime)
 		//강제로 죽게하는 asset추가해보기
 		std::cout << "m_objectMgr is NULL" << std::endl;
 	}
+	GSEVec3 heroPos;
+	heroPos = m_objectMgr->GetObject(m_heroID)->GetPos();
+	m_renderer->SetCameraPos(heroPos.x, heroPos.y);
 	m_objectMgr->DoGarbageCollect();
 }
 

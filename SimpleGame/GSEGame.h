@@ -22,8 +22,11 @@ private:
 	int m_heroTextureID = -1;
 	int m_bulletTextureID = -1;
 	int m_fireAnimTextureID = -1;
+	int m_groundTextureID = -1;
 	int m_bgSound = -1;
 	int m_explSound = -1;
 	int m_fireSound = -1;
+	int m_climateParticle = -1;
+	int m_fireParticle = -1;
 };
 
